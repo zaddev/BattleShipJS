@@ -94,6 +94,9 @@ io.on('connection', function(socket){
 app.get('/', function(req, res){
 	res.sendfile('index.html');
 });
+app.get('/style.css', function(req, res) {
+	res.sendfile('css/style.css');
+});
  
 http.listen(port, function(){
 	console.log('listening on *:' + port);

@@ -3,12 +3,67 @@
 <head>
 	<meta charset="utf-8">
 	<title>Test</title>
-	<!--<link rel="stylesheet" href="">-->
+	<link rel="stylesheet" href="style.css">
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script>
+		
+		function breedteSchip(schip) {
+			var breedte;
+			
+			switch(schip.afmeting) {
+				case 2:
+					breedte = "144px";
+					break;
+				case 3:
+					breedte = "216px";
+					break;
+				case 4:
+					breedte = "288px";
+					break;
+				case 5:
+					breedte = "360px";
+					break;
+				case 6:
+					breedte = "432px";
+					break;
+				case 7:
+					breedte = "503px";
+					break;
+			}
+			return breedte;
+		}
+		
+		
 		var socket = io();
 	  
 		socket.on('getSchepen', function (msg) {
+			for(var i = 0; i < msg[1].height; i++){
+				$( "#bord" ).append( "<div id='row" + i + "' class='rowstyle'>" );
+				for(var j = 0; j < msg[1].width; j++) {
+					var name = "#row" + i;
+					$( name ).append( "<div class='x" + j + " drop-target'></div>" );
+				}
+				$( "#bord" ).append( "</div>" );
+			}
+			for(var i = 0; i < msg[0].length; i++) {
+				$( "#schepen" ).append( "<div class='pep " + msg[0][i].naam + "' style= 'width: " + breedteSchip(msg[0][i]) + "'></div>" );
+			}
+			
+			$( "#bord" ).slideDown( "slow" );
+			$( "#schepen" ).slideDown( "slow" );
+			
+			$( ".pep" ).dblclick(function() {
+				var width = $( this ).width();
+				var height = $( this ).height();
+				
+				$( this ).width(height);
+				$( this ).height(width);
+			});
+			
+			$( ".pep" ).draggable({ snap: ".drop-target" });
+			
 			console.log(msg);
 			var testdata = msg[0];
 			var slagschepen = 0,
@@ -126,6 +181,11 @@
 	</script>
 </head>
 <body>
-	<p>Webpagina</p>
+	<div class="clearfix">
+		<div id="bord" class="demo droppable floatleft" style="display: none;">
+			<p>Dubbel klik om uw schip te draaien</p>
+		</div>
+		<div id="schepen" class="floatright relative"></div>
+	</div>
 </body>
 </html>
