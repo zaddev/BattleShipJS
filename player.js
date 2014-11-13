@@ -96,6 +96,10 @@ player.prototype.ifBordEmpty = function () {
 	{
 		return false;
 	}
+	else
+	{
+		return true;
+	}
 	
 }
 
