@@ -16,7 +16,6 @@ var afmeting = [5, 4, 3, 3, 2];
 exports.makePlayers = function () {
 	player1.setup(this);
 	player2.setup(this);
-	
 	return [player1, player2];
 }
 
@@ -129,13 +128,12 @@ exports.setShoot = function(shot, socket) {
 	{
 		if(beurt == 1)
 		{
-			if(player2.getSchot(shot) == 'hit')
+			if(player2.getSchot(shot) == 'hit' || player2.getSchot(shot) == 'missed')
 			{
-				console.log("Er is raakgeshoten");
-			}
-			else if (player2.getSchot(shot) == 'missed')
-			{
-				console.log("Er is mis geschoten");
+				console.log("Geschoten");
+				player2.ifBordEmpty();	//Controleer of het spel klaar is
+				player2.turn(shot);
+				player1.wait();
 			}
 			else
 			{
@@ -151,13 +149,12 @@ exports.setShoot = function(shot, socket) {
 	{
 		if(beurt == 2)
 		{
-			if(player1.getSchot(shot) == 'hit')
+			if(player1.getSchot(shot) == 'hit' || player1.getSchot(shot) == 'missed')
 			{
-				console.log("Er is raakgeshoten");
-			}
-			else if (player1.getSchot(shot) == 'missed')
-			{
-				console.log("Er is mis geschoten");
+				console.log("Geschoten");
+				player1.ifBordEmpty();	//Controleer of het spel klaar is
+				player1.turn(shot);
+				player2.wait();
 			}
 			else
 			{
@@ -177,7 +174,6 @@ exports.setShoot = function(shot, socket) {
 		return false;
 	}
 }
-
 
 exports.broadcastToAll = function(onderwerp, message, dimensions) {
 	GLOBAL.io.emit(onderwerp, [message, dimensions]);

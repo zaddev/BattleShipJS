@@ -58,4 +58,8 @@ Bord.prototype.setShot = function (shot) {
 	return this.gameBord[shot[1]].setShot(shot[0]);
 }
 
+Bord.prototype.getBord = function () {
+	return this.gameBord;
+}
+
 module.exports = Bord;

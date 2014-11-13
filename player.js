@@ -78,4 +78,25 @@ player.prototype.getSchot = function (shot) {
 	return this.bord.setShot(shot);
 }
 
+player.prototype.ifBordEmpty = function () {
+	var array = this.bord.getBord();
+	var found = 0;
+	
+	for(var i = 0; i < array.length; i++) {
+		for(var j = 0; j < array[i].rij.length; j++) {
+			if(array[i].rij[j] == [ true, false ])
+			{
+				found = 1;
+				break;
+			}
+		}
+	}
+	
+	if (found)
+	{
+		return false;
+	}
+	
+}
+
 module.exports = player;
