@@ -37,6 +37,10 @@ io.on('connection', function(socket){
 	}
 	
 	socket.on('setSchepen', function(aoSchepen){
+
+		if(typeof aoSchepen === 'string')
+			aoSchepen = JSON.parse(aoSchepen)
+
 		if(socket.rooms[1] == player1.getRoom())
 		{
 			if(player1.setSchepen(aoSchepen))
