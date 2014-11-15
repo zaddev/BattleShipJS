@@ -7,15 +7,19 @@
 }
 .demo .drop-target {
   border: 1px solid #000000;
-  height: 70px;
-  width: 70px;
+  height: 50px;
+  width: 50px;
   display: inline-block;
+}
+.drop-target > div {
+	width: 100%;
+	height: 100%;
 }
 .demo .drop-target.pep-dpa {
   background: #ffedc4;
 }
 .rowstyle {
-	height: 72px;
+	height: 52px;
 }
 .floatleft {
 	float:left;

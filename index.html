@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="style.css">
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script>
 		
 		function breedteSchip(schip) {
@@ -43,26 +42,113 @@
 				$( "#bord" ).append( "<div id='row" + i + "' class='rowstyle'>" );
 				for(var j = 0; j < msg[1].width; j++) {
 					var name = "#row" + i;
-					$( name ).append( "<div class='x" + j + " drop-target'></div>" );
+					$( name ).append( "<div class='x" + j + " drop-target'><div></div></div>" );
 				}
 				$( "#bord" ).append( "</div>" );
 			}
+			var schepen = [];
+			var aantal = [];
+			var grootte = 0;
+			for(var i = 0; i < msg[0].length; i++)
+			{
+				if(schepen.indexOf(msg[0][i].naam) == -1)
+				{
+					$( "#inputfields" ).append("<input type='radio' id='" + msg[0][i].naam + "' class='kiesboot' name='schip' value='" + msg[0][i].naam + "'/><label for='" + msg[0][i].naam + "'>" + msg[0][i].naam + "</label><br />");
+					schepen.push(msg[0][i].naam);
+					aantal[schepen.indexOf(msg[0][i].naam)] = 1;
+				}
+				else
+				{
+					aantal[schepen.indexOf(msg[0][i].naam)] += 1;
+				}
+			}
+			
+			for(var i = 0; i < aantal.length; i++)
+			{
+				var idnaam = "label[for= " + schepen[i] + "]";
+				$( idnaam ).append(" " + aantal[i] + "x" );
+			}
+			
+			$( ".drop-target > div" ).hover(function() {
+			  	if(grootte != 0)
+			  	{
+				  	$( this ).width(0);
+				  	$( this ).height(0);
+				  	$( this ).css('border', '26px solid transparent'); 
+				  	$( this ).css("border-bottom-color", "#757575");
+				  	var x = $( this ).parent().attr('class').split('x')[1].split(' ')[0];
+				  	var y = $( this ).parent().parent().attr('id').split('row')[1];
+				  	for(i = 1; i < grootte; i++)
+					{
+						if(i != (grootte - 1)) {
+							$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).css("background-color","#757575");
+						}
+					}
+					var einde = $( ("#row" + (parseInt(y) + (grootte - 1)) ) ).children((".x" + parseInt(x))).children();
+					einde.width(0);
+				  	einde.height(0);
+				  	einde.css('border', '26px solid transparent'); 
+				  	einde.css("border-top-color", "#757575");
+					
+			  	}
+			}, function() {
+				$( this ).width("100%");
+				$( this ).height("100%");
+				$( this ).css('border', 'none');
+				var x = $( this ).parent().attr('class').split('x')[1].split(' ')[0];
+				var y = $( this ).parent().parent().attr('id').split('row')[1];
+				for(var i = 1; i < grootte; i++)
+				{
+					if(i != (grootte - 1)) {
+						$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).css("background-color","transparant");
+					}
+				}
+				var einde = $( ("#row" + (parseInt(y) + (grootte - 1)) ) ).children((".x" + parseInt(x))).children();
+				einde.width(0);
+			  	einde.height(0);
+			  	einde.css('border', '26px solid transparent'); 
+			  	einde.css("border-top-color", "transparent");
+			});
+			
+			$('.kiesboot').click(function() {
+				var arrayid = schepen.indexOf($( this ).attr('id'));
+				var afmeting = 0;
+				if(aantal[arrayid] > 0)
+				{
+					for(var i = 0; i < msg[0].length; i++) {
+						if(msg[0][i].naam == $( this ).attr('id'))
+						{
+							afmeting = msg[0][i].afmeting;
+							break;
+						}
+					}
+					//aantal[arrayid] -= 1;  VOOR HET WEGHALEN
+				}
+				if(afmeting == 0)
+				{
+					console.log("Error met de afmeting");
+				}
+				else
+				{
+					grootte = afmeting;
+				}
+			});
+			
+			/*
 			for(var i = 0; i < msg[0].length; i++) {
 				$( "#schepen" ).append( "<div class='pep " + msg[0][i].naam + "' style= 'width: " + breedteSchip(msg[0][i]) + "'></div>" );
 			}
-			
+			*/
 			$( "#bord" ).slideDown( "slow" );
 			$( "#schepen" ).slideDown( "slow" );
 			
-			$( ".pep" ).dblclick(function() {
+			/*$( ".pep" ).dblclick(function() {
 				var width = $( this ).width();
 				var height = $( this ).height();
 				
 				$( this ).width(height);
 				$( this ).height(width);
-			});
-			
-			$( ".pep" ).draggable({ snap: ".drop-target" });
+			});*/
 			
 			console.log(msg);
 			var testdata = msg[0];
@@ -185,7 +271,10 @@
 		<div id="bord" class="demo droppable floatleft" style="display: none;">
 			<p>Dubbel klik om uw schip te draaien</p>
 		</div>
-		<div id="schepen" class="floatright relative"></div>
+		<div id="schepen" class="floatright relative">
+			<form id="inputfields">
+			</form>
+		</div>
 	</div>
 </body>
 </html>
