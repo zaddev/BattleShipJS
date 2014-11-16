@@ -255,14 +255,10 @@
 				}
 			});
 			
-			$('#reset').click(function() {
-				//console.log($("div[data-schip]")[1]);
-				
+			$('#reset').click(function() {		
 				$("div[data-schip-set]").removeAttr( "data-schip-set" );
 				jQuery.each( $("div[data-schip]"), function( val ) {
-					//console.log(val);
 					var richting = $(($("div[data-schip]")[val])).attr("data-schip-richting");
-					
 					
 					$(($("div[data-schip]")[val])).removeAttr( "data-schip-richting" );
 					$(($("div[data-schip]")[val])).parent().removeAttr( "data-schip-set" );
@@ -275,19 +271,33 @@
 						}
 					}
 					grootte = afmeting;
-					console.log(grootte);
 					plaatsschip(($("div[data-schip]")[val]), "transparant", richting, true);
 					grootte = 0;
 				});
 				$("div[data-schip]").removeAttr( "data-schip" );
-				/*
-				for(var i = 0; i < $("div[data-schip]").length; i++){
-					var richting = $("div[data-schip-set]")[i].children().attr("data-schip-richting");
-					$("div[data-schip-set]")[i].children().removeAttr( "data-schip" );
-					$("div[data-schip-set]")[i].children().removeAttr( "data-schip-richting" );
-					$("div[data-schip-set]")[i].removeAttr( "data-schip-set" );
-					plaatsschip(this, "transparant", richting, true);
-				}*/
+				
+				//Bord is nu leeg nu de aantallen weer resetten
+				$( "#inputfields" ).text("");
+				schepen = [];
+				aantal = [];
+				for(var i = 0; i < msg[0].length; i++)
+				{
+					if(schepen.indexOf(msg[0][i].naam) == -1)
+					{
+						$( "#inputfields" ).append("<input type='radio' id='" + msg[0][i].naam + "' class='kiesboot' name='schip' value='" + msg[0][i].naam + "'/><label for='" + msg[0][i].naam + "'>" + msg[0][i].naam + "</label><br />");
+						schepen.push(msg[0][i].naam);
+						aantal[schepen.indexOf(msg[0][i].naam)] = 1;
+					}
+					else
+					{
+						aantal[schepen.indexOf(msg[0][i].naam)] += 1;
+					}
+				}
+				for(var i = 0; i < aantal.length; i++)
+				{
+					var idnaam = "label[for= " + schepen[i] + "]";
+					$( idnaam ).append("<span class='aantalschepen'> " + aantal[i] + "x</span>" );
+				}
 			});
 			
 			/*
