@@ -66,48 +66,162 @@
 			for(var i = 0; i < aantal.length; i++)
 			{
 				var idnaam = "label[for= " + schepen[i] + "]";
-				$( idnaam ).append(" " + aantal[i] + "x" );
+				$( idnaam ).append("<span class='aantalschepen'> " + aantal[i] + "x</span>" );
+			}
+			
+			function plaatsschip(object, kleur, richting, reverse, schipset) {
+				if(richting == 'horizontaal') { 
+					
+					if ($( object ).parent().attr('data-schip-set') === undefined) {
+						if (reverse != true) {
+							$( object ).width(0);
+					  		$( object ).height(0);
+					  		$( object ).css('border', '26px solid transparent'); 
+					  	}
+					  	else
+					  	{
+						  	$( object ).width("100%");
+					  		$( object ).height("100%");
+					  		$( object ).css('border', 'none'); 
+					  	}
+					  	$( object ).css("border-right-color", kleur);
+					}
+				  	if(schipset == true)
+				  	{
+				  		$( object ).parent().attr("data-schip-set", "gezet");
+				  	}
+				  	var x = $( object ).parent().attr('class').split('x')[1].split(' ')[0];
+				  	for(var i = 1; i < grootte; i++)
+				  	{
+					  	if(i != (grootte - 1)) {
+						  	if ($( object ).parent().parent().children( (".x" + (parseInt(x) + i)) ).attr('data-schip-set') === undefined) {
+							  	$( object ).parent().parent().children( (".x" + (parseInt(x) + i)) ).css("background-color",kleur);
+							  	if(schipset == true)
+							  	{
+							  		$( object ).parent().parent().children( (".x" + (parseInt(x) + i)) ).attr("data-schip-set", "gezet");
+							  	}
+							}
+						}
+				  	}
+				  	var einde = $( object ).parent().parent().children((".x" + (parseInt(x) + (grootte - 1)))).children();
+					if (einde.parent().attr('data-schip-set') === undefined) {
+						if (reverse != true) {
+							einde.width(0);
+					  		einde.height(0);
+					  		einde.css('border', '26px solid transparent'); 
+					  	}
+					  	else
+					  	{
+						  	einde.width("100%");
+						  	einde.height("100%");
+						  	einde.css('border', 'none'); 
+					  	}
+					  	if (schipset == true)
+					  	{
+						  	einde.parent().attr("data-schip-set", "gezet");
+					  	}
+					  	einde.css("border-left-color", kleur);
+					}
+				  	
+				  	
+				}
+				else if (richting == 'verticaal') {
+					if ($( object ).parent().attr('data-schip-set') === undefined) {
+						if (reverse != true) {
+							$( object ).width(0);
+					  		$( object ).height(0);
+					  		$( object ).css('border', '26px solid transparent'); 
+					  	}
+					  	else
+					  	{
+						  	$( object ).width("100%");
+					  		$( object ).height("100%");
+					  		$( object ).css('border', 'none'); 
+					  	}
+					  	$( object ).css("border-bottom-color", kleur);
+					  	
+					}
+					if(schipset == true)
+				  	{
+				  		$( object ).parent().attr("data-schip-set", "gezet");
+				  	}
+				  	var x = $( object ).parent().attr('class').split('x')[1].split(' ')[0];
+				  	var y = $( object ).parent().parent().attr('id').split('row')[1];
+				  	for(var i = 1; i < grootte; i++)
+					{
+						
+						if(i != (grootte - 1)) {
+							if ($( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).attr('data-schip-set') === undefined) {
+								$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).css("background-color",kleur);
+							}
+							if(schipset == true)
+						  	{
+						  		$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).attr("data-schip-set", "gezet");
+						  	}	
+						}
+					}
+					var einde = $( ("#row" + (parseInt(y) + (grootte - 1)) ) ).children((".x" + parseInt(x))).children();
+					if ( einde.parent().attr('data-schip-set') === undefined) {
+						if (reverse != true) {
+							einde.width(0);
+					  		einde.height(0);
+					  		einde.css('border', '26px solid transparent'); 
+					  	}
+					  	else
+					  	{
+						  	einde.width("100%");
+						  	einde.height("100%");
+						  	einde.css('border', 'none'); 
+					  	}
+					  	if (schipset == true)
+					  	{
+						  	einde.parent().attr("data-schip-set", "gezet");
+					  	}
+					  	einde.css("border-top-color", kleur);
+					}
+					
+				}
+
 			}
 			
 			$( ".drop-target > div" ).hover(function() {
 			  	if(grootte != 0)
 			  	{
-				  	$( this ).width(0);
-				  	$( this ).height(0);
-				  	$( this ).css('border', '26px solid transparent'); 
-				  	$( this ).css("border-bottom-color", "#757575");
-				  	var x = $( this ).parent().attr('class').split('x')[1].split(' ')[0];
-				  	var y = $( this ).parent().parent().attr('id').split('row')[1];
-				  	for(i = 1; i < grootte; i++)
-					{
-						if(i != (grootte - 1)) {
-							$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).css("background-color","#757575");
-						}
+				  	if($('#horizontaal').is(':checked')) { 
+						plaatsschip(this, "#757575", "horizontaal");
 					}
-					var einde = $( ("#row" + (parseInt(y) + (grootte - 1)) ) ).children((".x" + parseInt(x))).children();
-					einde.width(0);
-				  	einde.height(0);
-				  	einde.css('border', '26px solid transparent'); 
-				  	einde.css("border-top-color", "#757575");
+					else if($('#verticaal').is(':checked')) { 
+						plaatsschip(this, "#757575", "verticaal");
+				  	}
 					
 			  	}
 			}, function() {
-				$( this ).width("100%");
-				$( this ).height("100%");
-				$( this ).css('border', 'none');
-				var x = $( this ).parent().attr('class').split('x')[1].split(' ')[0];
-				var y = $( this ).parent().parent().attr('id').split('row')[1];
-				for(var i = 1; i < grootte; i++)
-				{
-					if(i != (grootte - 1)) {
-						$( ("#row" + (parseInt(y) + i) ) ).children( (".x" + parseInt(x)) ).css("background-color","transparant");
+				if(grootte != 0)
+			  	{
+					if($('#horizontaal').is(':checked')) { 
+						plaatsschip(this, "transparant", "horizontaal", true);
 					}
+					else if($('#verticaal').is(':checked')) { 
+						plaatsschip(this, "transparant", "verticaal", true);
+				  	}
+			  	}
+			});
+			
+			$('.drop-target > div').click(function() {
+				var schip = $('input[name=schip]:checked', '#inputfields').val();
+				var richting = $('input[name=richting]:checked', '#richting').val();
+				$( this ).attr("data-schip", schip);
+				$( this ).attr("data-schip-richting", richting);
+				plaatsschip(this, "#23ae6b", richting, false, true);
+				var arrayid = schepen.indexOf(schip);
+				aantal[arrayid] -= 1;
+				var idnaam = "label[for= " + schip + "] > span.aantalschepen";
+				$( idnaam ).text( " " + aantal[arrayid] + "x" );
+				if(aantal[arrayid] == 0)
+				{
+					$( ("#" + schip) ).prop('checked', false);
+					grootte = 0;
 				}
-				var einde = $( ("#row" + (parseInt(y) + (grootte - 1)) ) ).children((".x" + parseInt(x))).children();
-				einde.width(0);
-			  	einde.height(0);
-			  	einde.css('border', '26px solid transparent'); 
-			  	einde.css("border-top-color", "transparent");
 			});
 			
 			$('.kiesboot').click(function() {
@@ -123,6 +237,10 @@
 						}
 					}
 					//aantal[arrayid] -= 1;  VOOR HET WEGHALEN
+				}
+				else
+				{
+					$(this).prop('checked', false);
 				}
 				if(afmeting == 0)
 				{
@@ -269,10 +387,13 @@
 <body>
 	<div class="clearfix">
 		<div id="bord" class="demo droppable floatleft" style="display: none;">
-			<p>Dubbel klik om uw schip te draaien</p>
 		</div>
-		<div id="schepen" class="floatright relative">
+		<div id="schepen" class="floatright relative" style="display: none;">
 			<form id="inputfields">
+			</form>
+			<form id="richting">
+				<br /><br /><input type='radio' id='horizontaal' name='richting' value='horizontaal' checked /><label for='horizontaal'>horizontaal</label><br />
+				<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label>
 			</form>
 		</div>
 	</div>
