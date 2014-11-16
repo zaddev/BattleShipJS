@@ -255,6 +255,41 @@
 				}
 			});
 			
+			$('#reset').click(function() {
+				//console.log($("div[data-schip]")[1]);
+				
+				$("div[data-schip-set]").removeAttr( "data-schip-set" );
+				jQuery.each( $("div[data-schip]"), function( val ) {
+					//console.log(val);
+					var richting = $(($("div[data-schip]")[val])).attr("data-schip-richting");
+					
+					
+					$(($("div[data-schip]")[val])).removeAttr( "data-schip-richting" );
+					$(($("div[data-schip]")[val])).parent().removeAttr( "data-schip-set" );
+					var afmeting;
+					for(var i = 0; i < msg[0].length; i++) {
+						if(msg[0][i].naam == $(($("div[data-schip]")[val])).attr("data-schip"))
+						{
+							afmeting = msg[0][i].afmeting;
+							break;
+						}
+					}
+					grootte = afmeting;
+					console.log(grootte);
+					plaatsschip(($("div[data-schip]")[val]), "transparant", richting, true);
+					grootte = 0;
+				});
+				$("div[data-schip]").removeAttr( "data-schip" );
+				/*
+				for(var i = 0; i < $("div[data-schip]").length; i++){
+					var richting = $("div[data-schip-set]")[i].children().attr("data-schip-richting");
+					$("div[data-schip-set]")[i].children().removeAttr( "data-schip" );
+					$("div[data-schip-set]")[i].children().removeAttr( "data-schip-richting" );
+					$("div[data-schip-set]")[i].removeAttr( "data-schip-set" );
+					plaatsschip(this, "transparant", richting, true);
+				}*/
+			});
+			
 			/*
 			for(var i = 0; i < msg[0].length; i++) {
 				$( "#schepen" ).append( "<div class='pep " + msg[0][i].naam + "' style= 'width: " + breedteSchip(msg[0][i]) + "'></div>" );
@@ -396,8 +431,9 @@
 			</form>
 			<form id="richting">
 				<br /><br /><input type='radio' id='horizontaal' name='richting' value='horizontaal' checked /><label for='horizontaal'>horizontaal</label><br />
-				<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label>
+				<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label> 
 			</form>
+			<br /><br /><button id="reset" style="width: 100%;">Reset</button>
 		</div>
 	</div>
 </body>
