@@ -208,19 +208,22 @@
 			});
 			
 			$('.drop-target > div').click(function() {
-				var schip = $('input[name=schip]:checked', '#inputfields').val();
-				var richting = $('input[name=richting]:checked', '#richting').val();
-				$( this ).attr("data-schip", schip);
-				$( this ).attr("data-schip-richting", richting);
-				plaatsschip(this, "#23ae6b", richting, false, true);
-				var arrayid = schepen.indexOf(schip);
-				aantal[arrayid] -= 1;
-				var idnaam = "label[for= " + schip + "] > span.aantalschepen";
-				$( idnaam ).text( " " + aantal[arrayid] + "x" );
-				if(aantal[arrayid] == 0)
+				if(grootte != 0)
 				{
-					$( ("#" + schip) ).prop('checked', false);
-					grootte = 0;
+					var schip = $('input[name=schip]:checked', '#inputfields').val();
+					var richting = $('input[name=richting]:checked', '#richting').val();
+					$( this ).attr("data-schip", schip);
+					$( this ).attr("data-schip-richting", richting);
+					plaatsschip(this, "#23ae6b", richting, false, true);
+					var arrayid = schepen.indexOf(schip);
+					aantal[arrayid] -= 1;
+					var idnaam = "label[for= " + schip + "] > span.aantalschepen";
+					$( idnaam ).text( " " + aantal[arrayid] + "x" );
+					if(aantal[arrayid] == 0)
+					{
+						$( ("#" + schip) ).prop('checked', false);
+						grootte = 0;
+					}
 				}
 			});
 			
