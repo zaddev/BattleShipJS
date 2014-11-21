@@ -48,6 +48,7 @@
 			}
 			var schepen = [];
 			var aantal = [];
+			var aantal2 = [];
 			var grootte = 0;
 			for(var i = 0; i < msg[0].length; i++)
 			{
@@ -56,10 +57,12 @@
 					$( "#inputfields" ).append("<input type='radio' id='" + msg[0][i].naam + "' class='kiesboot' name='schip' value='" + msg[0][i].naam + "'/><label for='" + msg[0][i].naam + "'>" + msg[0][i].naam + "</label><br />");
 					schepen.push(msg[0][i].naam);
 					aantal[schepen.indexOf(msg[0][i].naam)] = 1;
+					aantal2[schepen.indexOf(msg[0][i].naam)] = 1;
 				}
 				else
 				{
 					aantal[schepen.indexOf(msg[0][i].naam)] += 1;
+					aantal2[schepen.indexOf(msg[0][i].naam)] += 1;
 				}
 			}
 			
@@ -239,7 +242,6 @@
 							break;
 						}
 					}
-					//aantal[arrayid] -= 1;  VOOR HET WEGHALEN
 				}
 				else
 				{
@@ -299,25 +301,44 @@
 					$( idnaam ).append("<span class='aantalschepen'> " + aantal[i] + "x</span>" );
 				}
 			});
-			
-			/*
-			for(var i = 0; i < msg[0].length; i++) {
-				$( "#schepen" ).append( "<div class='pep " + msg[0][i].naam + "' style= 'width: " + breedteSchip(msg[0][i]) + "'></div>" );
-			}
-			*/
+
+			$( ".loading" ).slideUp( "slow" );
 			$( "#bord" ).slideDown( "slow" );
 			$( "#schepen" ).slideDown( "slow" );
 			
-			/*$( ".pep" ).dblclick(function() {
-				var width = $( this ).width();
-				var height = $( this ).height();
+			
+			$('#setShips').click(function() {
+				var eindresultaat = msg[0];
 				
-				$( this ).width(height);
-				$( this ).height(width);
-			});*/
+				jQuery.each( $("div[data-schip]"), function( val ) {
+					var schiparrayid = schepen.indexOf($(($("div[data-schip]")[val])).attr("data-schip"));
+					
+					var naam = $(($("div[data-schip]")[val])).attr("data-schip");
+					var afmeting = aantal2[schiparrayid];
+					var x = parseInt($(($("div[data-schip]")[val])).parent().attr('class').split('x')[1].split(' ')[0]);
+					var y = parseInt($(($("div[data-schip]")[val])).parent().parent().attr('id').split('row')[1]);
+					var position = $(($("div[data-schip]")[val])).attr("data-schip-richting");
+				
+					for(var i = 0; i < eindresultaat.length; i++)
+					{
+						if(eindresultaat[i].naam == naam && eindresultaat[i].position == 0)
+						{
+							eindresultaat[i].x = x;
+							eindresultaat[i].y = y;
+							eindresultaat[i].position = position;
+							break;
+						}
+					}
+				});
+				
+				console.log(eindresultaat);
+				socket.emit('setSchepen', eindresultaat);
+				
+			});
+			
 			
 			console.log(msg);
-			var testdata = msg[0];
+			/*var testdata = msg[0];
 			var slagschepen = 0,
 				onderzeeer = 0,
 				torpedobootjager = 0,
@@ -416,8 +437,10 @@
 				}
 				
 			}
+			
 			console.log(testdata);
 			socket.emit('setSchepen', testdata);
+			*/
 		});
 		
 		socket.on('turn', function (msg) {
@@ -433,6 +456,9 @@
 	</script>
 </head>
 <body>
+	<div class="loading">
+		<img src="http://a.deviantart.net/avatars/l/o/loading-plz.gif?1" alt="loading" /><p>Wachten op de andere speler</p>
+	</div>
 	<div class="clearfix">
 		<div id="bord" class="demo droppable floatleft" style="display: none;">
 		</div>
@@ -443,7 +469,8 @@
 				<br /><br /><input type='radio' id='horizontaal' name='richting' value='horizontaal' checked /><label for='horizontaal'>horizontaal</label><br />
 				<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label> 
 			</form>
-			<br /><br /><button id="reset" style="width: 100%;">Reset</button>
+			<br /><br /><button id="reset" style="width: 100%;">Reset</button><br /><br />
+			<button id="setShips" style="width: 100%;">Zet je schepen!</button>
 		</div>
 	</div>
 </body>
