@@ -66,8 +66,8 @@ player.prototype.turn = function (vorigezet) {
 	this.player.emit("turn", vorigezet);
 }
 
-player.prototype.wait = function () {
-	this.player.emit("wait");
+player.prototype.wait = function (geschoten) {
+	this.player.emit("wait", geschoten);
 }
 
 player.prototype.sendMessage = function (naam, value) {

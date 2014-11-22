@@ -449,8 +449,9 @@
 			socket.emit('setShoot', [3, 4]);
 		});
 		
-		socket.on('wait', function () {
+		socket.on('wait', function (schot) {
 			console.log("Even wachten hoor guys!");
+			console.log(schot);
 		});
 		
 	</script>

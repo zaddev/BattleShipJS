@@ -129,16 +129,17 @@ exports.setShoot = function(shot, socket) {
 	{
 		if(beurt == 1)
 		{
-			if(player2.getSchot(shot) == 'hit' || player2.getSchot(shot) == 'missed')
+			var resultaat = player2.getSchot(shot);
+			if(resultaat == 'hit' || resultaat == 'missed')
 			{
 				console.log("Geschoten");
-				if(player1.ifBordEmpty()) {	//Controleer of het spel klaar is
+				if(player2.ifBordEmpty()) {	//Controleer of het spel klaar is
 					console.log("Het spel is klaar!");
 				}
 				else
 				{
 					player2.turn(shot);
-					player1.wait();
+					player1.wait(resultaat);
 					beurt = 2;
 				}
 			}
@@ -156,7 +157,8 @@ exports.setShoot = function(shot, socket) {
 	{
 		if(beurt == 2)
 		{
-			if(player1.getSchot(shot) == 'hit' || player1.getSchot(shot) == 'missed')
+			var resultaat = player1.getSchot(shot);
+			if(resultaat == 'hit' || resultaat == 'missed')
 			{
 				console.log("Geschoten");
 				if(player1.ifBordEmpty()) {	//Controleer of het spel klaar is
@@ -165,7 +167,7 @@ exports.setShoot = function(shot, socket) {
 				else
 				{
 					player1.turn(shot);
-					player2.wait();
+					player2.wait(resultaat);
 					beurt = 1;
 				}
 			}
