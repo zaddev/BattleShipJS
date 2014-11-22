@@ -49,7 +49,13 @@ exports.validateSchepen = function (aoSchepen, dimensions) {
 		{
 			switch(aoSchepen[i].position) {
 				case "horizontaal":
-					if((aoSchepen[i].x + aoSchepen[i].afmeting) < dimensions.width || (aoSchepen[i].x + aoSchepen[i].afmeting) > 0)
+					if((aoSchepen[i].x + aoSchepen[i].afmeting) > dimensions.width || (aoSchepen[i].x + aoSchepen[i].afmeting) < 0)
+					{
+						console.log("De x loopt uit het veld");
+						error = true;
+						
+					}
+					else
 					{
 						if(aoSchepen[i].y > dimensions.height || aoSchepen[i].y < 0)
 						{
@@ -57,25 +63,20 @@ exports.validateSchepen = function (aoSchepen, dimensions) {
 							error = true;
 						}
 					}
-					else
-					{
-						console.log("De x loopt uit het veld");
-						error = true;
-					}
 					break;
 				case "verticaal":
-					if((aoSchepen[i].y + aoSchepen[i].afmeting) < dimensions.height || (aoSchepen[i].y + aoSchepen[i].afmeting) > 0)
+					if((aoSchepen[i].y + aoSchepen[i].afmeting) > dimensions.height || (aoSchepen[i].y + aoSchepen[i].afmeting) < 0)
+					{
+						console.log("De y loopt uit het veld");
+						error = true;
+					}
+					else
 					{
 						if(aoSchepen[i].x > dimensions.width || aoSchepen[i].x < 0)
 						{
 							console.log("De x loopt uit het veld");
 							error = true;
 						}
-					}
-					else
-					{
-						console.log("De y loopt uit het veld");
-						error = true;
 					}
 					break;
 				default:
