@@ -80,15 +80,23 @@ player.prototype.getSchot = function (shot) {
 
 player.prototype.ifBordEmpty = function () {
 	var array = this.bord.getBord();
-	var found = 0;
+	var found = false;
 	
 	for(var i = 0; i < array.length; i++) {
-		for(var j = 0; j < array[i].rij.length; j++) {
-			if(array[i].rij[j] == [ true, false ])
-			{
-				found = 1;
-				break;
+		if (!found)
+		{
+			for(var j = 0; j < array[i].rij.length; j++) {
+				
+				if(array[i].rij[j][0] == true && array[i].rij[j][1] == false)
+				{
+					found = true;
+					break;
+				}
 			}
+		}
+		else
+		{
+			break;
 		}
 	}
 	
