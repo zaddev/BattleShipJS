@@ -13,6 +13,9 @@ player.prototype.setup = function (gameClass) {
 player.prototype.setPlayer = function (socket) {
 	this.player = socket;
 }
+player.prototype.getPlayer = function () {
+	return this.player;
+}
 
 player.prototype.setRoom = function (room) {
 	this.playerRoom = room;

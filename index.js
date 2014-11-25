@@ -14,6 +14,11 @@ player2 = players[1];
 player1.setGamebord();
 player2.setGamebord();
 
+app.on('close', function () {
+  console.log("Closed");
+  redis.quit();
+});
+
 io.on('connection', function(socket){
 	if(connected == 0)
 	{
@@ -39,7 +44,9 @@ io.on('connection', function(socket){
 	socket.on('setSchepen', function(aoSchepen){
 
 		if(typeof aoSchepen === 'string')
-			aoSchepen = JSON.parse(aoSchepen)
+		{
+			aoSchepen = JSON.parse(aoSchepen);
+		}
 
 		if(socket.rooms[1] == player1.getRoom())
 		{
@@ -90,10 +97,31 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('setShoot', function(aShot){
+		if (typeof aShot === "string") {
+			aShot = JSON.parse(aShot);
+		}
 		game.setShoot(aShot, socket);
+	});
+	socket.on('disconnect', function(){
+	    console.log("Disconnect");
+	    /*
+	    console.log(socket.rooms);
+	    if(socket.rooms[1] == player1.getRoom())
+	    {
+		    player2.sendMessage("disconnect", "");
+		    console.log("Player 1 heeft ons verlaten");
+	    }
+	    else if (socket.rooms[1] == player2.getRoom())
+	    {
+		    player1.sendMessage("disconnect", "");
+		    console.log("Player 2 heeft ons verlaten");
+	    }
+	    */
+		// @todo: message voor disconnect
 	});
 	
 });
+
 
 app.get('/', function(req, res){
 	res.sendfile('index.html');
