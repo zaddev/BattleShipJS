@@ -89,10 +89,7 @@ io.on('connection', function(socket){
 		}
 	});
 	
-	socket.on('setShoot', function (aShot) {
-	    if (typeof aShot === "string")
-	        aShot = JSON.parse(aShot);
-
+	socket.on('setShoot', function(aShot){
 		game.setShoot(aShot, socket);
 	});
 	
