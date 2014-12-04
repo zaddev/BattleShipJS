@@ -104,20 +104,7 @@ io.on('connection', function(socket){
 	});
 	socket.on('disconnect', function(){
 	    console.log("Disconnect");
-	    /*
-	    console.log(socket.rooms);
-	    if(socket.rooms[1] == player1.getRoom())
-	    {
-		    player2.sendMessage("disconnect", "");
-		    console.log("Player 1 heeft ons verlaten");
-	    }
-	    else if (socket.rooms[1] == player2.getRoom())
-	    {
-		    player1.sendMessage("disconnect", "");
-		    console.log("Player 2 heeft ons verlaten");
-	    }
-	    */
-		// @todo: message voor disconnect
+		game.broadcastToAll("disconnect");
 	});
 	
 });

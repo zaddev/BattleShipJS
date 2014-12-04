@@ -191,6 +191,13 @@ exports.setShoot = function(shot, socket) {
 }
 
 exports.broadcastToAll = function(onderwerp, message, dimensions) {
-	GLOBAL.io.emit(onderwerp, [message, dimensions]);
+	if(typeof message === 'undefined')
+	{
+		GLOBAL.io.emit(onderwerp);
+	}
+	else
+	{
+		GLOBAL.io.emit(onderwerp, [message, dimensions]);
+	}
 	console.log("Alle gebruikers hebben een bericht gekregen");
 }
