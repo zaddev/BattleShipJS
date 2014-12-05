@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>Test</title>
 	<link rel="stylesheet" href="style.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script>
@@ -40,9 +41,12 @@
 		socket.on('getSchepen', function (msg) {
 			for(var i = 0; i < msg[1].height; i++){
 				$( "#bord" ).append( "<div id='row" + i + "' class='rowstyle'>" );
+				$( "#bord2" ).append( "<div id='row2-" + i + "' class='rowstyle'>" );
 				for(var j = 0; j < msg[1].width; j++) {
 					var name = "#row" + i;
 					$( name ).append( "<div class='x" + j + " drop-target'><div></div></div>" );
+					name = "#row2-" + i;
+					$( name ).append( "<div class='x" + j + " drop-target'><i class='fa fa-times fa-4x'></i></div>" );
 				}
 				$( "#bord" ).append( "</div>" );
 			}
@@ -333,7 +337,6 @@
 				
 				console.log(eindresultaat);
 				socket.emit('setSchepen', eindresultaat);
-				
 			});
 			
 			
@@ -441,17 +444,121 @@
 			console.log(testdata);
 			socket.emit('setSchepen', testdata);
 			*/
+			
+		});
+		function getShootScreen() {
+			$( "#bord" ).slideDown( "fast" );
+			$( "#wrapper" ).addClass( "wrapper" );
+			$( "#schepen" ).slideUp( "slow" );
+			$( "#bord2" ).slideDown( "slow" );
+			$( ".shoot" ).slideDown( "slow" );
+			
+			$( "li.fade" ).hover(function() {
+			  $( this ).fadeOut( 100 );
+			  $( this ).fadeIn( 500 );
+			});
+			
+			
+			$('#bord2 > div > div').click(clickShoot);
+			
+			
+		}
+		
+		
+		
+		function getShoot(schot) {
+			var x = schot[0];
+			var y = schot[1];
+			
+			var attr = $( ("#row" + y)).children((".x" + x)).attr('data-schip-set');
+			console.log(attr);
+			if (typeof attr !== typeof undefined && attr !== false) {
+				console.log("RAAK");
+				$( ("#row" + y)).children((".x" + x)).append( "<i class='fa fa-times fa-4x' style='color: red; display: block;position: absolute;top: -8px;'></i>" );
+			}
+			else
+			{
+				console.log("MIS");
+				$( ("#row" + y)).children((".x" + x)).append( "<i class='fa fa-times fa-4x' style='color: red; display: block;position: absolute;top: -8px;'></i>" );
+			}
+			
+			
+		}
+		var shootgeklikt = false;
+		var firsttime = true;
+		
+		function clickShoot() {
+			if(!shootgeklikt)
+			{
+				$(this).children("i").css("color","blue");
+				$(this).children("i").css("display","block");
+				shootgeklikt = this;
+			}
+			else
+			{
+				$(shootgeklikt).children("i").removeAttr( 'style' );
+				$(this).children("i").css("color","blue");
+				$(this).children("i").css("display","block");
+				shootgeklikt = this;
+			}
+			
+		}
+		$(function() {
+			$('#shoot').click(function() {
+				var attr = $("#shoot").attr('disabled');
+				
+				$(shootgeklikt).children("i").css("color","green");
+				console.log(attr);
+				
+				if (typeof attr !== typeof undefined && attr !== false) {}
+				else
+				{
+					if (!shootgeklikt)
+					{
+						alert("Kies een locatie voor je schot.");
+					}
+					else
+					{
+						var x = parseInt($(shootgeklikt).attr('class').split('x')[1].split(' ')[0]);
+						var y = parseInt($(shootgeklikt).parent().attr('id').split('row2-')[1]);
+						
+						socket.emit('setShoot', [x, y]);
+					}
+				}
+			});
 		});
 		
-		socket.on('turn', function (msg) {
-			console.log("Aan de beurt yeah!:" + msg);
+		
+		socket.on('turn', function (schot) {
+			console.log("Aan de beurt yeah!:" + schot);
+			$("#shoot").removeAttr("disabled");
+			if(firsttime)
+			{
+				getShootScreen();
+				firsttime = false;
+			}
 			
-			socket.emit('setShoot', [3, 4]);
+			if(typeof schot !== 'undefined'){
+				getShoot(schot);
+			}
+			
+			//socket.emit('setShoot', [3, 4]);
 		});
 		
 		socket.on('wait', function (schot) {
 			console.log("Even wachten hoor guys!");
 			console.log(schot);
+			
+			$("#shoot").attr('disabled', 'disabled');
+			if(schot == 'hit')
+			{
+				$(shootgeklikt).children("i").css("color","red");
+				$(shootgeklikt).children("i").removeClass('fa-times').addClass('fa-fire');
+				$(shootgeklikt).children("i").removeClass('fa-4x').addClass('fa-3x');
+				$(shootgeklikt).children("i").css("padding-left","7px");
+			}
+			
+			shootgeklikt = false;
 		});
 		
 	</script>
@@ -461,18 +568,25 @@
 		<img src="http://a.deviantart.net/avatars/l/o/loading-plz.gif?1" alt="loading" /><p>Wachten op de andere speler</p>
 	</div>
 	<div class="clearfix">
-		<div id="bord" class="demo droppable floatleft" style="display: none;">
+		<div id="wrapper">
+			<div id="bord" class="droppable floatleft" style="display: none;">
+			</div>
+			<div id="bord2" class="floatleft" style="display: none;">
+			</div>
+			<div id="schepen" class="floatright relative" style="display: none;">
+				<form id="inputfields">
+				</form>
+				<form id="richting">
+					<br /><br /><input type='radio' id='horizontaal' name='richting' value='horizontaal' checked /><label for='horizontaal'>horizontaal</label><br />
+					<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label> 
+				</form>
+				<br /><br /><button id="reset" style="width: 100%;">Reset</button><br /><br />
+				<button id="setShips" style="width: 100%;">Zet je schepen!</button>
+			</div>
+			<div class="clear"></div>
+			<div class="shoot" style="display: none;"><button id="shoot">Schiet!</button></div>
 		</div>
-		<div id="schepen" class="floatright relative" style="display: none;">
-			<form id="inputfields">
-			</form>
-			<form id="richting">
-				<br /><br /><input type='radio' id='horizontaal' name='richting' value='horizontaal' checked /><label for='horizontaal'>horizontaal</label><br />
-				<input type='radio' id='verticaal' name='richting' value='verticaal'/><label for='verticaal'>verticaal</label> 
-			</form>
-			<br /><br /><button id="reset" style="width: 100%;">Reset</button><br /><br />
-			<button id="setShips" style="width: 100%;">Zet je schepen!</button>
-		</div>
+		
 	</div>
 </body>
 </html>

@@ -5,11 +5,12 @@
   position: absolute;
   right: 0;
 }
-.demo .drop-target {
+.drop-target {
   border: 1px solid #000000;
   height: 50px;
   width: 50px;
-  display: inline-block;
+  float:left;
+  position: relative;
 }
 .drop-target > div {
 	width: 100%;
@@ -27,6 +28,18 @@
 .floatright {
 	float: right;
 }
+#bord2 {
+	margin-left: 50px;
+}
+
+#bord2 > div > div > i {
+	display: none;
+	color:red;
+	line-height: 48px;
+}
+#bord2 > div > div:hover > i {
+	display: block;
+}
 
 .clearfix:after {
    content: " "; /* Older browser do not support empty content */
@@ -38,4 +51,22 @@
 
 .relative {
 	position: relative;
+}
+.wrapper {
+	margin: 0 auto;
+	width: 1090px;
+}
+.clear {
+	clear:both;
+}
+.shoot {
+	height: 50px;
+	width: 100px;
+	margin: 0 auto;
+}
+.shoot button {
+	width: 100%;
+	height: 100%;
+	font-size: 20px;
+	margin-top: 15px;
 }
