@@ -68,6 +68,12 @@ player.prototype.setSchepen = function (aoSchepen) {
 player.prototype.turn = function (vorigezet) {
 	this.player.emit("turn", vorigezet);
 }
+player.prototype.won = function (vorigezet) {
+	this.player.emit("won", vorigezet);
+}
+player.prototype.lose = function (vorigezet) {
+	this.player.emit("lose", vorigezet);
+}
 
 player.prototype.wait = function (geschoten) {
 	this.player.emit("wait", geschoten);
