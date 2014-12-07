@@ -561,6 +561,14 @@
 			shootgeklikt = false;
 		});
 		
+		socket.on('disconnect', function () {
+			$( "#bord" ).slideUp( "slow" );
+			$( "#schepen" ).slideUp( "slow" );
+			$( "#bord2" ).slideUp( "slow" );
+			$( ".shoot" ).slideUp( "slow" );
+			$( "#disconnected" ).slideDown( "slow" );
+		});
+		
 	</script>
 </head>
 <body>
@@ -569,6 +577,7 @@
 	</div>
 	<div class="clearfix">
 		<div id="wrapper">
+			<div id="disconnected" style="display: none;"><p>De tegenstander heeft de verbinding verbroken</p></div>
 			<div id="bord" class="droppable floatleft" style="display: none;">
 			</div>
 			<div id="bord2" class="floatleft" style="display: none;">

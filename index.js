@@ -39,6 +39,7 @@ io.on('connection', function(socket){
 	{
 		console.log("Om te beginnen. Plaats uw schepen!");
 		game.broadcastToAll("getSchepen", game.getSchepen(), game.getDimensions());
+		connected = 3;
 	}
 	
 	socket.on('setSchepen', function(aoSchepen){
