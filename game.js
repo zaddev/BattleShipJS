@@ -135,7 +135,7 @@ exports.setShoot = function(shot, socket) {
 				console.log("Geschoten");
 				if(player2.ifBordEmpty()) {	//Controleer of het spel klaar is
 					console.log("Het spel is klaar! Player 1 heeft gewonnen");
-					player1.won(shot);
+					player1.won();
 					player2.lose(shot);
 				}
 				else
@@ -165,7 +165,7 @@ exports.setShoot = function(shot, socket) {
 				console.log("Geschoten");
 				if(player1.ifBordEmpty()) {	//Controleer of het spel klaar is
 					console.log("Het spel is klaar! Player 2 heeft gewonnen");
-					player2.won(shot);
+					player2.won();
 					player1.lose(shot);
 				}	
 				else

@@ -562,6 +562,7 @@
 		});
 		
 		socket.on('disconnect', function () {
+			$( ".loading" ).slideUp( "slow" );
 			$( "#bord" ).slideUp( "slow" );
 			$( "#schepen" ).slideUp( "slow" );
 			$( "#bord2" ).slideUp( "slow" );

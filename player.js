@@ -68,8 +68,8 @@ player.prototype.setSchepen = function (aoSchepen) {
 player.prototype.turn = function (vorigezet) {
 	this.player.emit("turn", vorigezet);
 }
-player.prototype.won = function (vorigezet) {
-	this.player.emit("won", vorigezet);
+player.prototype.won = function () {
+	this.player.emit("won");	//Speciaal voor barld
 }
 player.prototype.lose = function (vorigezet) {
 	this.player.emit("lose", vorigezet);
