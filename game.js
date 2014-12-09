@@ -43,51 +43,59 @@ exports.getSchepen = function () {
 exports.validateSchepen = function (aoSchepen, dimensions) {
 	var exampleJSON = this.getSchepen();
 	var error = false;
-	for (var i = 0; i < aoSchepen.length; i++)
+	if(exampleJSON.length !== aoSchepen.length)
 	{
-		if(aoSchepen[i].afmeting == exampleJSON[i].afmeting)
+		console.log("Niet volledige array meegestuurd");
+		error = true;
+	}
+	else
+	{
+		for (var i = 0; i < aoSchepen.length; i++)
 		{
-			switch(aoSchepen[i].position) {
-				case "horizontaal":
-					if((aoSchepen[i].x + aoSchepen[i].afmeting) > dimensions.width || (aoSchepen[i].x + aoSchepen[i].afmeting) < 0)
-					{
-						console.log("De x loopt uit het veld");
-						error = true;
-						
-					}
-					else
-					{
-						if(aoSchepen[i].y > dimensions.height || aoSchepen[i].y < 0)
+			if(aoSchepen[i].afmeting == exampleJSON[i].afmeting)
+			{
+				switch(aoSchepen[i].position) {
+					case "horizontaal":
+						if((aoSchepen[i].x + aoSchepen[i].afmeting) > dimensions.width || (aoSchepen[i].x + aoSchepen[i].afmeting) < 0)
+						{
+							console.log("De x loopt uit het veld");
+							error = true;
+							
+						}
+						else
+						{
+							if(aoSchepen[i].y > dimensions.height || aoSchepen[i].y < 0)
+							{
+								console.log("De y loopt uit het veld");
+								error = true;
+							}
+						}
+						break;
+					case "verticaal":
+						if((aoSchepen[i].y + aoSchepen[i].afmeting) > dimensions.height || (aoSchepen[i].y + aoSchepen[i].afmeting) < 0)
 						{
 							console.log("De y loopt uit het veld");
 							error = true;
 						}
-					}
-					break;
-				case "verticaal":
-					if((aoSchepen[i].y + aoSchepen[i].afmeting) > dimensions.height || (aoSchepen[i].y + aoSchepen[i].afmeting) < 0)
-					{
-						console.log("De y loopt uit het veld");
-						error = true;
-					}
-					else
-					{
-						if(aoSchepen[i].x > dimensions.width || aoSchepen[i].x < 0)
+						else
 						{
-							console.log("De x loopt uit het veld");
-							error = true;
+							if(aoSchepen[i].x > dimensions.width || aoSchepen[i].x < 0)
+							{
+								console.log("De x loopt uit het veld");
+								error = true;
+							}
 						}
-					}
-					break;
-				default:
-					console.log("Een schip mag alleen 'horizontaal' of 'verticaal' zijn");
-					error = true;
+						break;
+					default:
+						console.log("Een schip mag alleen 'horizontaal' of 'verticaal' zijn");
+						error = true;
+				}
 			}
-		}
-		else
-		{
-			console.log("We hebben een hacker onder ons.");
-			error = true;
+			else
+			{
+				console.log("We hebben een hacker onder ons.");
+				error = true;
+			}
 		}
 	}
 	if(!error)
