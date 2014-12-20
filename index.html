@@ -39,6 +39,7 @@
 		var socket = io();
 	  
 		socket.on('getSchepen', function (msg) {
+			$( "#disconnected" ).slideUp( "slow" );
 			for(var i = 0; i < msg[1].height; i++){
 				$( "#bord" ).append( "<div id='row" + i + "' class='rowstyle'>" );
 				$( "#bord2" ).append( "<div id='row2-" + i + "' class='rowstyle'>" );
@@ -234,7 +235,7 @@
 				}
 			});
 			
-			$('.kiesboot').click(function() {
+			$("body").on('click', '.kiesboot', function() {
 				var arrayid = schepen.indexOf($( this ).attr('id'));
 				var afmeting = 0;
 				if(aantal[arrayid] > 0)
@@ -304,6 +305,9 @@
 					var idnaam = "label[for= " + schepen[i] + "]";
 					$( idnaam ).append("<span class='aantalschepen'> " + aantal[i] + "x</span>" );
 				}
+				
+				
+				
 			});
 
 			$( ".loading" ).slideUp( "slow" );
@@ -337,114 +341,7 @@
 				
 				console.log(eindresultaat);
 				socket.emit('setSchepen', eindresultaat);
-			});
-			
-			
-			console.log(msg);
-			/*var testdata = msg[0];
-			var slagschepen = 0,
-				onderzeeer = 0,
-				torpedobootjager = 0,
-				patrouilleschip = 0;
-			for(var i = 0; i < testdata.length; i++)
-			{
-				if(testdata[i].naam == 'vliegdekschip')
-				{
-					testdata[i].x = 4;
-					testdata[i].y = 9;
-					testdata[i].position = 'horizontaal';
-				}
-				else if(testdata[i].naam == 'slagschip' && slagschepen == 0)
-				{
-					testdata[i].x = 6;
-					testdata[i].y = 0;
-					testdata[i].position = 'horizontaal';
-					slagschepen = 1;
-				}
-				else if(testdata[i].naam == 'slagschip' && slagschepen == 1)
-				{
-					testdata[i].x = 0;
-					testdata[i].y = 2;
-					testdata[i].position = 'verticaal';
-					slagschepen = 2;
-				}
-				else if(testdata[i].naam == 'onderzeeer' && onderzeeer == 0)
-				{
-					testdata[i].x = 3;
-					testdata[i].y = 0;
-					testdata[i].position = 'verticaal';
-					onderzeeer = 1;
-				}
-				else if(testdata[i].naam == 'onderzeeer' && onderzeeer == 1)
-				{
-					testdata[i].x = 5;
-					testdata[i].y = 2;
-					testdata[i].position = 'horizontaal';
-					onderzeeer = 2;
-				}
-				else if(testdata[i].naam == 'onderzeeer' && onderzeeer == 2)
-				{
-					testdata[i].x = 9;
-					testdata[i].y = 5;
-					testdata[i].position = 'verticaal';
-					onderzeeer = 3;
-				}
-				else if(testdata[i].naam == 'torpedobootjager' && torpedobootjager == 0)
-				{
-					testdata[i].x = 2;
-					testdata[i].y = 4;
-					testdata[i].position = 'horizontaal';
-					torpedobootjager = 1;
-				}
-				else if(testdata[i].naam == 'torpedobootjager' && torpedobootjager == 1)
-				{
-					testdata[i].x = 3;
-					testdata[i].y = 6;
-					testdata[i].position = 'verticaal';
-					torpedobootjager = 2;
-				}
-				else if(testdata[i].naam == 'torpedobootjager' && torpedobootjager == 2)
-				{
-					testdata[i].x = 0;
-					testdata[i].y = 9;
-					testdata[i].position = 'horizontaal';
-					torpedobootjager = 3;
-				}
-				else if(testdata[i].naam == 'patrouilleschip' && patrouilleschip == 0)
-				{
-					testdata[i].x = 0;
-					testdata[i].y = 0;
-					testdata[i].position = 'horizontaal';
-					patrouilleschip = 1;
-				}
-				else if(testdata[i].naam == 'patrouilleschip' && patrouilleschip == 1)
-				{
-					testdata[i].x = 9;
-					testdata[i].y = 2;
-					testdata[i].position = 'verticaal';
-					patrouilleschip = 2;
-				}
-				else if(testdata[i].naam == 'patrouilleschip' && patrouilleschip == 2)
-				{
-					testdata[i].x = 5;
-					testdata[i].y = 5;
-					testdata[i].position = 'verticaal';
-					patrouilleschip = 3;
-				}
-				else if(testdata[i].naam == 'patrouilleschip' && patrouilleschip == 3)
-				{
-					testdata[i].x = 0;
-					testdata[i].y = 7;
-					testdata[i].position = 'horizontaal';
-					patrouilleschip = 4;
-				}
-				
-			}
-			
-			console.log(testdata);
-			socket.emit('setSchepen', testdata);
-			*/
-			
+			});			
 		});
 		function getShootScreen() {
 			$( "#bord" ).slideDown( "fast" );
@@ -460,8 +357,6 @@
 			
 			
 			$('#bord2 > div > div').click(clickShoot);
-			
-			
 		}
 		
 		
@@ -568,6 +463,9 @@
 			$( "#bord2" ).slideUp( "slow" );
 			$( ".shoot" ).slideUp( "slow" );
 			$( "#disconnected" ).slideDown( "slow" );
+			$( "#bord" ).empty();
+			$( "#inputfields" ).empty();
+			$( "#bord2" ).empty();
 		});
 		
 	</script>
