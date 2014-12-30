@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="nl">
 <head>
 	<meta charset="utf-8">
@@ -10,29 +10,9 @@
 	<script>
 		
 		function breedteSchip(schip) {
-			var breedte;
-			
-			switch(schip.afmeting) {
-				case 2:
-					breedte = "144px";
-					break;
-				case 3:
-					breedte = "216px";
-					break;
-				case 4:
-					breedte = "288px";
-					break;
-				case 5:
-					breedte = "360px";
-					break;
-				case 6:
-					breedte = "432px";
-					break;
-				case 7:
-					breedte = "503px";
-					break;
-			}
-			return breedte;
+			if (schip.afmeting >= 2 && schip.afmeting <= 5)
+			    return schip.afmeting * 72;
+			return undefined;
 		}
 		
 		
