@@ -112,10 +112,10 @@ io.on('connection', function(socket){
 
 
 app.get('/', function(req, res){
-	res.sendfile('index.html');
+	res.sendFile(__dirname + '/index.html');
 });
 app.get('/style.css', function(req, res) {
-	res.sendfile('css/style.css');
+	res.sendFile(__dirname + '/css/style.css');
 });
  
 http.listen(port, function(){
