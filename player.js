@@ -19,8 +19,7 @@ player.prototype.getPlayer = function () {
 
 player.prototype.setRoom = function (room) {
 	this.playerRoom = room;
-	
-	this.player.join(this.playerRoom);
+	this.player.join(room.toString());
 }
 
 player.prototype.getRoom = function () {
@@ -44,7 +43,7 @@ player.prototype.setSchepen = function (aoSchepen) {
 		for(var i = 0; i < aoSchepen.length; i++)
 		{
 			var oShip = {afmeting: aoSchepen[i].afmeting, x: aoSchepen[i].x, y: aoSchepen[i].y, position: aoSchepen[i].position};
-			
+
 			if(this.bord.setSchip(oShip))
 			{
 				console.log(aoSchepen[i].naam + " opgeslagen");
@@ -90,12 +89,12 @@ player.prototype.getSchot = function (shot) {
 player.prototype.ifBordEmpty = function () {
 	var array = this.bord.getBord();
 	var found = false;
-	
+
 	for(var i = 0; i < array.length; i++) {
 		if (!found)
 		{
 			for(var j = 0; j < array[i].rij.length; j++) {
-				
+
 				if(array[i].rij[j][0] == true && array[i].rij[j][1] == false)
 				{
 					found = true;
@@ -108,7 +107,7 @@ player.prototype.ifBordEmpty = function () {
 			break;
 		}
 	}
-	
+
 	if (found)
 	{
 		return false;
@@ -117,7 +116,7 @@ player.prototype.ifBordEmpty = function () {
 	{
 		return true;
 	}
-	
+
 }
 
 module.exports = player;

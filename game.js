@@ -25,9 +25,9 @@ exports.getDimensions = function () {
 
 exports.getSchepen = function () {
 	//return {schepen: schepen, aantal: aantal, afmeting: afmeting};
-	
+
 	var schepenJSON = [];
-	
+
 	for (var i = 0; i < schepen.length; i++)
 	{
 		var aantali = aantal[i];
@@ -61,7 +61,7 @@ exports.validateSchepen = function (aoSchepen, dimensions) {
 							{
 								console.log("De x loopt uit het veld");
 								error = true;
-								
+
 							}
 							else
 							{
@@ -114,11 +114,11 @@ exports.validateSchepen = function (aoSchepen, dimensions) {
 	{
 		console.log("Error!");
 	}
-	
+
 }
 exports.play = function() {
 	var beginplayer = Math.floor(Math.random() * 2) == 0;
-	
+
 	if (beginplayer)
 	{
 		player1.turn();
@@ -139,8 +139,8 @@ exports.setShoot = function(shot, socket) {
 	{
 		console.log("Je shot is uit het veld!");
 	}
-	
-	if(socket.rooms[1] == player1.getRoom())
+
+	if(this.socketIsPlayerOneOrTwo(socket) == 'player1')
 	{
 		if(beurt == 1)
 		{
@@ -170,7 +170,7 @@ exports.setShoot = function(shot, socket) {
 			console.log("Voor je beurt gaan? Serieus!?");
 		}
 	}
-	else if (socket.rooms[1] == player2.getRoom())
+	else if (this.socketIsPlayerOneOrTwo(socket) == 'player2')
 	{
 		if(beurt == 2)
 		{
@@ -182,7 +182,7 @@ exports.setShoot = function(shot, socket) {
 					console.log("Het spel is klaar! Player 2 heeft gewonnen");
 					player2.won();
 					player1.lose(shot);
-				}	
+				}
 				else
 				{
 					player1.turn(shot);
@@ -209,14 +209,27 @@ exports.setShoot = function(shot, socket) {
 	}
 }
 
+exports.socketIsPlayerOneOrTwo = function(socket) {
+	if(socket.id == player1.player.id) {
+		return 'player1'
+	}
+	else if(socket.id == player2.player.id) {
+		return 'player2'
+	}
+	else {
+		console.log("Wow BOOM error!");
+		return false
+	}
+}
+
 exports.broadcastToAll = function(onderwerp, message, dimensions) {
 	if(typeof message === 'undefined')
 	{
-		GLOBAL.io.emit(onderwerp);
+		global.io.emit(onderwerp);
 	}
 	else
 	{
-		GLOBAL.io.emit(onderwerp, [message, dimensions]);
+		global.io.emit(onderwerp, [message, dimensions]);
 	}
 	console.log("Alle gebruikers hebben een bericht gekregen");
 }

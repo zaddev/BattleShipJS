@@ -1,11 +1,29 @@
 {
-    "name": "Socket",
-    "version": "0.0.1",
-    "description": "Zeeslag",
-    "dependencies": {
-        "socket.io": "latest",
-        "express": "latest",
-        "jade": "latest"
-    },
-    "author": "Ruben van den Engel"
+  "name": "battleshipjs",
+  "version": "1.0.0",
+  "description": "Zeeslag",
+  "dependencies": {
+    "socket.io": "latest",
+    "express": "latest",
+    "jade": "latest"
+  },
+  "author": "Ruben van den Engel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaddev/BattleShipJS.git"
+  },
+  "keywords": [
+    "BattleShip",
+    "NodeJS",
+    "SocketIO"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaddev/BattleShipJS/issues"
+  },
+  "homepage": "https://github.com/zaddev/BattleShipJS#readme"
 }

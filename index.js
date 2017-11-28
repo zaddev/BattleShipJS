@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var port = 3700;
-GLOBAL.io = require('socket.io')(http);
+global.io = require('socket.io')(http);
 
 var game = require('./game.js')
 	, connected = 0
@@ -34,14 +34,14 @@ io.on('connection', function(socket){
 		connected = 2;
 		console.log("Player 2 set");
 	}
-	
+
 	if(connected == 2)
 	{
 		console.log("Om te beginnen. Plaats uw schepen!");
 		game.broadcastToAll("getSchepen", game.getSchepen(), game.getDimensions());
 		connected = 3;
 	}
-	
+
 	socket.on('setSchepen', function(aoSchepen){
 
 		if(typeof aoSchepen === 'string')
@@ -49,7 +49,7 @@ io.on('connection', function(socket){
 			aoSchepen = JSON.parse(aoSchepen);
 		}
 
-		if(socket.rooms[1] == player1.getRoom())
+		if(game.socketIsPlayerOneOrTwo(socket) == 'player1')
 		{
 			if(player1.setSchepen(aoSchepen))
 			{
@@ -69,7 +69,7 @@ io.on('connection', function(socket){
 				console.log("Error met de setSchepen functie");
 			}
 		}
-		else if (socket.rooms[1] == player2.getRoom())
+		else if (game.socketIsPlayerOneOrTwo(socket) == 'player2')
 		{
 			if(player2.setSchepen(aoSchepen))
 			{
@@ -96,7 +96,7 @@ io.on('connection', function(socket){
 			console.log("Dit had het moeten zijn:" + player1.getRoom() + " of " + player2.getRoom());
 		}
 	});
-	
+
 	socket.on('setShoot', function(aShot){
 		if (typeof aShot === "string") {
 			aShot = JSON.parse(aShot);
@@ -107,7 +107,7 @@ io.on('connection', function(socket){
 	    console.log("Disconnect");
 		game.broadcastToAll("disconnect");
 	});
-	
+
 });
 
 
@@ -117,8 +117,7 @@ app.get('/', function(req, res){
 app.get('/style.css', function(req, res) {
 	res.sendFile(__dirname + '/css/style.css');
 });
- 
+
 http.listen(port, function(){
 	console.log('listening on *:' + port);
 });
-
