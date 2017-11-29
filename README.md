@@ -3,7 +3,8 @@
 Een zeeslag socket.io applicatie met een client ingebouwd.
 
 ### Versie
-We zitten nog in een de beta fase. Er zullen veel updates deze tijd uitkomen.
+__Dit project is verouderd en zal updates meer krijgen.__ 
+Voel je vrij om dit project te gebruiken voor eigen gebruik.
 
 ### Tech
 
